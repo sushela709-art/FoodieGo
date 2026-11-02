@@ -7,7 +7,8 @@ const cors = require("cors");
 
 const restaurantRoutes = require("./src/routes/restaurantRoutes");
 const menuItemRoutes = require("./src/routes/menuItemRoutes");
-
+const authRoutes = require("./src/routes/authRoutes");
+const adminRoutes = require("./src/routes/adminRoutes");
 const app = express();
 
 app.use(cors());
@@ -21,6 +22,9 @@ app.get("/", (req, res) => {
 // Restaurant routes
 app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/menuItems", menuItemRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
+
 
 // Check environment variable
 console.log("MongoDB URI loaded:", !!process.env.MONGO_URI);
