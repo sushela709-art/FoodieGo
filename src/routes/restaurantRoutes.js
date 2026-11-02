@@ -1,5 +1,6 @@
-
+ 
 const express = require("express");
+const router = express.Router();
 
 const {
     createRestaurant,
@@ -9,21 +10,19 @@ const {
     deleteRestaurant
 } = require("../controllers/restaurantController");
 
-const router = express.Router();
-
-// POST - Create Restaurant
+// POST - Create restaurant
 router.post("/", createRestaurant);
 
-// GET - Get All Restaurants
+// GET - All restaurants
 router.get("/", getRestaurants);
 
-// GET - Get Restaurant by ID
+// GET - Restaurant by ID
 router.get("/:id", getRestaurantById);
 
-// PUT - Update Restaurant
+// Put - Update restaurant
 router.put("/:id", updateRestaurant);
 
-// DELETE - Delete Restaurant
+// DELETE - Delete restaurant
 router.delete("/:id", deleteRestaurant);
 
 module.exports = router;

@@ -1,46 +1,41 @@
+      
+require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const path = require("path");
+const cors = require("cors");
 
-// Load .env from FoodieGo root folder
-dotenv.config({
-  path: path.resolve(process.cwd(), ".env")
-});
-
-console.log("MongoDB URI loaded:", !!process.env.MONGO_URI);
+const restaurantRoutes = require("./src/routes/restaurantRoutes");
+const menuItemRoutes = require("./src/routes/menuItemRoutes");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
-const connectDB = async () => {
-  try {
-    if (!process.env.MONGO_URI) {
-      throw new Error("MONGO_URI not found in root .env file");
-    }
+// Home route
+app.get("/", (req, res) => {
+    res.send("FoodieGo API is running");
+});
 
-    await mongoose.connect(process.env.MONGO_URI);
-
-    console.log("MongoDB Connected Successfully");
-  } catch (error) {
-    console.error("MongoDB connection failed:", error.message);
-    process.exit(1);
-  }
-};
-
-const PORT = process.env.PORT || 5000;
-
-const startServer = async () => {
-  await connectDB();
-const restaurantRoutes = require("./src/routes/restaurantRoutes");
-
+// Restaurant routes
 app.use("/api/restaurants", restaurantRoutes);
+app.use("/api/menuItems", menuItemRoutes);
 
-  app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
-  });
-};
+// Check environment variable
+console.log("MongoDB URI loaded:", !!process.env.MONGO_URI);
 
-startServer();
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => {
+        console.log("MongoDB Connected Successfully");
+
+        app.listen(process.env.PORT || 5000, () => {
+            console.log(`Server running on port ${process.env.PORT || 5000}`);
+        });
+    })
+    .catch((error) => {
+        console.log("MongoDB Connection Error:", error.message);
+    });
+
+module.exports = app;
