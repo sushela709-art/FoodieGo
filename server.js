@@ -9,6 +9,8 @@ const restaurantRoutes = require("./src/routes/restaurantRoutes");
 const menuItemRoutes = require("./src/routes/menuItemRoutes");
 const authRoutes = require("./src/routes/authRoutes");
 const adminRoutes = require("./src/routes/adminRoutes");
+const cartRoutes = require("./src/routes/cartRoutes");
+const orderRoutes = require("./src/routes/orderRoutes");
 const app = express();
 
 app.use(cors());
@@ -22,8 +24,11 @@ app.get("/", (req, res) => {
 // Restaurant routes
 app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/menuItems", menuItemRoutes);
+
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
 
 
 // Check environment variable
